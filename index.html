@@ -3,28 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محلل الشبكات والأمن السيبراني</title>
+    <title>محلل الشبكات والأمن السيبراني المتقدم</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { font-family: system-ui, -apple-system, sans-serif; background-color: #0f172a; color: #f8fafc; }
         .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-        .tab-btn.active { background-color: #0284c7; color: white; }
+        .tab-btn.active { background-color: #0284c7; color: white; border-color: #38bdf8; }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="p-4 md:p-8 min-h-screen">
     <div class="max-w-6xl mx-auto space-y-6">
         <!-- Header -->
         <header class="glass p-6 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4">
-            <div>
-                <h1 class="text-2xl md:text-3xl font-bold text-cyan-400 flex items-center gap-3">
-                    <i class="fa-solid fa-shield-halved"></i> مركز أدتظهر الصورة صفحة ويب مستضافة على **GitHub Pages** تحت الرابط:
-`jokar-24.github.io/Cs-network/`[cite: 1]
+            <div class="flex items-center gap-4">
+                <div class="p-3 bg-cyan-500/10 rounded-xl border border-cyan-500/20 text-cyan-400 text-3xl">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold text-cyan-400">محلل الشبكات والأمن السيبراني</h1>
+                    <p class="text-slate-400 text-sm">منصة فحص واختبار أمن الشبكات والـ IP التفاعلية</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 bg-slate-800/80 px-4 py-2 rounded-lg border border-slate-700">
+                <span class="w-3 h-3 bg-emerald-500 rounded-full animate-ping"></span>
+                <span class="text-emerald-400 font-mono text-sm">النظام متصل وجاهز</span>
+            </div>
+        </header>
 
-تتضمن الصفحة واجهة تطبيق أو موقع بعنوان:
-* **محلل الشبكات والأمن السيبراني**[cite: 1]
-* نص تأكيدي: **موقعك جاهز ويعمل بنجاح على Vercel!**[cite: 1]
-* حالة النظام: **Status: System Online & Operational**[cite: 1]
+        <!-- Navigation Tabs -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <button onclick="showTab('ip-sec')" id="btn-ip-sec" class="tab-btn active p-4 rounded-xl glass font-semibold flex items-center justify-center gap-2 border transition">
+                <i class="fa-solid fa-network-wired"></i> فحص الـ IP والشبكة
+            </button>
+            <button onclick="showTab('wifi-sec')" id="btn-wifi-sec" class="tab-btn p-4 rounded-xl glass font-semibold flex items-center justify-center gap-2 border border-transparent transition">
+                <i class="fa-solid fa-qrcode"></i> تحليل Wi-Fi QR
+            </button>
+            <button onclick="showTab('calc-sec')" id="btn-calc-sec" class="tab-btn p-4 rounded-xl glass font-semibold flex items-center justify-center gap-2 border border-transparent transition">
+                <i class="fa-solid fa-calculator"></i> حاسبة Subnet/CIDR
+            </button>
+            <button onclick="showTab('cheat-sec')" id="btn-cheat-sec" class="tab-btn p-4 rounded-xl glass font-semibold flex items-center justify-center gap-2 border border-transparent transition">
+                <i class="fa-solid fa-terminal"></i> المنافذ والأوامر
+            </button>
+        </div>
 
-إذا كنت بحاجة إلى مساعدة في تطوير هذا الموقع، أو إضافة أدوات تحليل شبكات، أو تعديل التصميم والربط البرمجي، يُرجى توضيح المطلوب لمساعدتك بشكل مباشر.
+        <!-- IP Analysis Tab -->
+        <div id="ip-sec" class="tab-content glass p-6 rounded-2xl space-y-6">
+            <h2 class="text-xl font-bold text-cyan-300 flex items-center gap-2">
+                <i class="fa-solid fa-magnifying-glass font-mono"></i> تحليل عنوان IP أوتوماتيكي / يدوي
+            </h2>
+            <div class="flex flex-col md:flex-row gap-4">
+                <input type="text" id="ip-input" placeholder="أدخل عنوان IP (مثال: 8.8.8.8) أو اتركه فارغاً لفحص عنوانك" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500">
+                <button onclick="analyzeIP()" class="bg-cyan-600 hover:bg-cyan-500 px-6 py-3 rounded-xl font-bold text-white transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-bolt"></i> بدء الفحص
+                </button>
+            </div>
+            <div id="ip-result" class="grid grid-cols-1 md:grid-cols-3 gap-4 hidden">
+                <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+                    <span class="text-xs text-slate-400 block mb-1">عنوان IP</span>
+                    <span id="res-ip" class="text-lg font-mono text-cyan-400 font-bold">-</span>
+                </div>
+                <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+                    <span class="text-xs text-slate-400 block mb-1">الدولة / المدينة</span>
+                    <span id="res-geo" class="text-lg font-bold text-slate-200">-</span>
+                </div>
+                <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+                    <span class="text-xs text-slate-400 block mb-1">مزود الخدمة (ISP)</span>
+                    <span id="res-isp" class="text-lg font-bold text-slate-200">-</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- WiFi Tab -->
+        <div id="wifi-sec" class="tab-content glass p-6 rounded-2xl space-y-6 hidden">
+            <h2 class="text-xl font-bold text-cyan-300 flex items-center gap-2">
+                <i class="fa-solid fa-qrcode"></i> قراءة وتحليل كود الـ QR للواي فاي
+            </h2>
+            <div class="border-2 border-dashed border-slate-700 rounded-2xl p-8 text-center bg-slate-900/40">
+                <input type="file" id="qr-file" accept="image/*" class="hidden" onchange="decodeQR(this)">
+                <label for="qr-file" class="cursor-pointer space-y-3 block">
+                    <i class="fa-solid fa-cloud-arrow-up text-4xl text-cyan-400"></i>
+                    <p class="text-slate-300 font-medium">اضغط هنا لرفع صورة QR للشبكة</p>
+                </label>
+            </div>
+            <div id="qr-result" class="bg-slate-800/60 p-4 rounded-xl border border-slate-700 hidden space-y-2">
+                <p><strong>اسم الشبكة (SSID):</strong> <span id="wifi-ssid" class="text-cyan-400 font-mono"></span></p>
+                <p><strong>نوع التشفير:</strong> <span id="wifi-type" class="text-emerald-400 font-mono"></span></p>
+                <p><strong>كلمة المرور:</strong> <span id="wifi-pass" class="text-amber-400 font-mono"></span></p>
+            </div>
+        </div>
+
+        <!-- CIDR Calc Tab -->
+        <div id="calc-sec" class="tab-content glass p-6 rounded-2xl space-y-6 hidden">
+            <h2 class="text-xl font-bold text-cyan-300 flex items-center gap-2">
+                <i class="fa-solid fa-calculator"></i> حاسبة أجزاء الشبكة (Subnet Calculator)
+            </h2>
+            <div class="flex flex-col md:flex-row gap-4">
+                <input type="text" id="cidr-input" placeholder="أدخل IP مع CIDR (مثال: 192.168.1.1/24)" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500">
+                <button onclick="calculateSubnet()" class="bg-cyan-600 hover:bg-cyan-500 px-6 py-3 rounded-xl font-bold text-white transition">حساب</button>
+            </div>
+            <div id="calc-result" class="grid grid-cols-1 md:grid-cols-2 gap-4 hidden">
+                <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+                    <span class="text-xs text-slate-400 block mb-1">قناع الشبكة (Netmask)</span>
+                    <span id="res-mask" class="text-lg font-mono text-cyan-400 font-bold">-</span>
+                </div>
+                <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+                    <span class="text-xs text-slate-400 block mb-1">عدد الأجهزة المتاحة</span>
+                    <span id="res-hosts" class="text-lg font-mono text-emerald-400 font-bold">-</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cheat Sheet Tab -->
+        <div id="cheat-sec" class="tab-content glass p-6 rounded-2xl space-y-6 hidden">
+            <h2 class="text-xl font-bold text-cyan-300 flex items-center gap-2">
+                <i class="fa-solid fa-terminal"></i> المنافذ والأوامر الشائعة (Security Cheat Sheet)
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 space-y-2">
+                    <h3 class="text-emerald-400 font-bold border-b border-slate-800 pb-2">أشهر المنافذ (Ports)</h3>
+                    <p class="text-sm text-slate-300 font-mono"><strong class="text-cyan-400">22:</strong> SSH (الاتصال الآمن)</p>
+                    <p class="text-sm text-slate-300 font-mono"><strong class="text-cyan-400">80:</strong> HTTP (تصفح غير مشفر)</p>
+                    <p class="text-sm text-slate-300 font-mono"><strong class="text-cyan-400">443:</strong> HTTPS (تصفح مشفر)</p>
+                    <p class="text-sm text-slate-300 font-mono"><strong class="text-cyan-400">53:</strong> DNS (تحويل العناوين)</p>
+                </div>
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 space-y-2">
+                    <h3 class="text-emerald-400 font-bold border-b border-slate-800 pb-2">أوامر Nmap الأساسية</h3>
+                    <p class="text-sm text-slate-300 font-mono"><strong class="text-cyan-400">nmap -sV [IP]:</strong> فحص الخدمات والإصدارات</p>
+                    <p class="text-sm text-slate-300 font-mono"><strong class="text-cyan-400">nmap -O [IP]:</strong> كشف نظام التشغيل</p>
+                    <p class="text-sm text-slate-300 font-mono"><strong class="text-cyan-400">nmap -F [IP]:</strong> مسح سريع لأشهر المنافذ</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.remove('hidden');
+            document.getElementById('btn-' + tabId).classList.add('active');
+        }
+
+        async function analyzeIP() {
+            const ip = document.getElementById('ip-input').value.trim();
+            const url = ip ? `https://ipapi.co/${ip}/json/` : `https://ipapi.co/json/`;
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                document.getElementById('res-ip').innerText = data.ip || 'غير معروف';
+                document.getElementById('res-geo').innerText = `${data.country_name || ''} - ${data.city || ''}`;
+                document.getElementById('res-isp').innerText = data.org || 'غير معروف';
+                document.getElementById('ip-result').classList.remove('hidden');
+            } catch (e) {
+                alert('تعذر جلب البيانات. التأكد من صلاحية IP');
+            }
+        }
+
+        function calculateSubnet() {
+            const val = document.getElementById('cidr-input').value.trim();
+            if(!val.includes('/')) return alert('يرجى كتابة الصيغة بشكل صحيح مثل 192.168.1.1/24');
+            const cidr = parseInt(val.split('/')[1]);
+            if(isNaN(cidr) || cidr < 0 || cidr > 32) return alert('قيمة CIDR غير صحيحة');
+            const hosts = Math.pow(2, 32 - cidr) - 2;
+            document.getElementById('res-mask').innerText = '/' + cidr;
+            document.getElementById('res-hosts').innerText = hosts > 0 ? hosts.toLocaleString() : 0;
+            document.getElementById('calc-result').classList.remove('hidden');
+        }
+
+        function decodeQR(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        canvas.width = img.width; canvas.height = img.height;
+                        ctx.drawImage(img, 0, 0);
+                        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                        const code = jsQR(imgData.data, imgData.width, imgData.height);
+                        if (code) {
+                            const raw = code.data;
+                            document.getElementById('wifi-ssid').innerText = raw.match(/S:(.*?);/)?.[1] || 'غير معروف';
+                            document.getElementById('wifi-type').innerText = raw.match(/T:(.*?);/)?.[1] || 'WPA/WPA2';
+                            document.getElementById('wifi-pass').innerText = raw.match(/P:(.*?);/)?.[1] || 'بدون كلمة سر';
+                            document.getElementById('qr-result').classList.remove('hidden');
+                        } else {
+                            alert('لم يتم العثور على رمز QR صالح في الصورة');
+                        }
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+</body>
+</html>
